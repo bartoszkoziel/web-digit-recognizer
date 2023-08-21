@@ -1,0 +1,19 @@
+{
+  "name": "digit-recognition-with-mnist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bartoszkoziel/digit-recognition-with-mnist.git"
+  },
+  "author": "beczooonia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bartoszkoziel/digit-recognition-with-mnist/issues"
+  },
+  "homepage": "https://github.com/bartoszkoziel/digit-recognition-with-mnist#readme"
+}
