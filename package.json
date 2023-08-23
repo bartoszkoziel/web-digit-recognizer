@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/bartoszkoziel/digit-recognition-with-mnist/issues"
   },
-  "homepage": "https://github.com/bartoszkoziel/digit-recognition-with-mnist#readme"
+  "homepage": "https://github.com/bartoszkoziel/digit-recognition-with-mnist#readme",
+  "dependencies": {
+    "tracer": "^1.1.6"
+  }
 }
