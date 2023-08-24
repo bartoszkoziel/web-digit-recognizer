@@ -1,5 +1,6 @@
 var isDrawing = false
 var grid = []
+var answer = ""
 
 document.body.onload = () => {
     createGrid()
@@ -49,7 +50,7 @@ handleClick = () => {
     })
 
     btnSend.addEventListener("click", () => {
-        sendGrid()
+        answer = sendGrid()
     })
 }
 
@@ -78,10 +79,12 @@ sendGrid = () => {
     const body = JSON.stringify(grid)
     const headers = { "Content-Type": "application/json"}
 
+    console.log("FETCHING")
+
     return fetch("/handleUpload", { method: "post", body, headers })
-        .then(response => response.json())
         .then(data => {
-            console.log(data)
-            return data.status
+            response = data.text()
+            console.log("response: ", response)
+            return response
         })
 }

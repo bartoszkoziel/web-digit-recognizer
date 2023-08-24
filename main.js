@@ -2,6 +2,8 @@ const http = require("http")
 const fs = require("fs")
 const logger = require("tracer").colorConsole()
 
+const cproc = require("child_process")
+
 const server = http.createServer((req, res) => {
     if (req.method == "GET" && req.url == "/") {
         mainpage = fs.readFileSync('./index.html')
@@ -32,18 +34,35 @@ const server = http.createServer((req, res) => {
 
         req.on('end', () => {
             try {
-                var post = JSON.parse(body);
-                // deal_with_post_data(request,post);
-                logger.info(post); // <--- here I just output the parsed JSON
+                var post = JSON.parse(body)
+                logger.info(post)
+
+                digitRecognition = cproc.spawn('python3.11', ['/home/beczooonia/repos/digit-recognition-with-mnist/dr.py', "input"])
+
+                digitRecognition.stdout.on('data', (data) => {
+                    logger.info("INSIDE")
+                    const output = data.toString();
+                        console.log(`Python Output: ${output}`);
+                    })
+                  
+                    digitRecognition.stderr.on('data', (data) => {
+                        console.error(`Python Error: ${data}`);
+                    })
+                  
+                    digitRecognition.on('close', (code) => {
+                        console.log(`Python process exited with code ${code}`);
+                    })
+
+
                 res.writeHead(200, {"Content-Type": "text/plain"});
-                res.end("TEMP RESPONSE");
-                return;
-              }catch (err){
-                res.writeHead(500, {"Content-Type": "text/plain"});
-                res.write("Bad Post Data.  Is your data a proper JSON?\n");
-                res.end();
-                return;
-              }
+                res.end("TEMP RESPONSE")
+                return
+            } catch (err){
+                res.writeHead(500, {"Content-Type": "text/plain"})
+                res.write("Bad Post Data.  Is your data a proper JSON?\n")
+                res.end()
+                return
+            }
         })
     }
 })
