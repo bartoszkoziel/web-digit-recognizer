@@ -1,4 +1,5 @@
 var isDrawing = false
+var grid = []
 
 document.body.onload = () => {
     createGrid()
@@ -22,6 +23,7 @@ createGrid = () => {
 handleClick = () => {
     const gridContainer = document.getElementById('grid-container');
     const btnClear = document.getElementById('btnClear');
+    const btnSend = document.getElementById('btnSend')
 
     gridContainer.addEventListener('mousedown', () => {
         isDrawing = true;
@@ -45,14 +47,41 @@ handleClick = () => {
     btnClear.addEventListener("click", () => {
         clearGrid()
     })
+
+    btnSend.addEventListener("click", () => {
+        sendGrid()
+    })
 }
 
 clearGrid = () => {
-    // Get all elements with the class "white"
-    var whiteElements = document.querySelectorAll('.selected');
+    grid = []
+    let whiteElements = document.querySelectorAll('.selected');
 
-    // Loop through each element and remove the class "white"
     whiteElements.forEach(function(element) {
     element.classList.remove('selected');
     });
+}
+
+sendGrid = () => {
+    let elements = document.querySelectorAll('.square');
+
+    elements.forEach(function(element) {
+        if (element.classList.contains('selected')) {
+            grid.push(1)
+        }
+
+        else {
+            grid.push(0)
+        }
+    })
+
+    const body = JSON.stringify(grid)
+    const headers = { "Content-Type": "application/json"}
+
+    return fetch("/handleUpload", { method: "post", body, headers })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            return data.status
+        })
 }
