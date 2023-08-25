@@ -35,9 +35,15 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             try {
                 var post = JSON.parse(body)
-                logger.info(post)
 
-                digitRecognition = cproc.spawn('python3.11', ['/home/beczooonia/repos/digit-recognition-with-mnist/dr.py', "input"])
+                let inputstring = ""
+                post.forEach(element => {
+                    inputstring += element.toString()
+                })
+
+                // logger.info("INPUT STRING: ", inputstring)
+
+                digitRecognition = cproc.spawn('python3.11', ['/home/beczooonia/repos/digit-recognition-with-mnist/dr.py', inputstring])
 
                 digitRecognition.stdout.on('data', (data) => {
                     logger.info("INSIDE")
