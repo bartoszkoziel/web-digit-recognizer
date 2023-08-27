@@ -60,6 +60,8 @@ clearGrid = () => {
 
     whiteElements.forEach(function(element) {
     element.classList.remove('selected');
+
+    document.getElementById("divPred").innerHTML = ""
     });
 }
 
@@ -81,10 +83,21 @@ sendGrid = () => {
 
     console.log("FETCHING")
 
-    return fetch("/handleUpload", { method: "post", body, headers })
+    let wynik = fetch("/handleUpload", { method: "post", body, headers })
         .then(data => {
-            response = data.text()
-            console.log("response: ", response)
-            return response
+            response = data.json()
+
+            return response.then((pred) => {
+                pred = pred[0]
+                // let text = ""
+
+                for (i=0; i<10; i++){
+                    let p = document.createElement("p")
+                    p.append(i + ": " + pred[i].toFixed(2))
+                    document.getElementById("divPred").append(p)
+                }
+            })
         })
+
+    console.log("WYNICZEK HERE: ", wynik)
 }
