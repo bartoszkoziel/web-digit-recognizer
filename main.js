@@ -1,27 +1,25 @@
 const http = require("http")
 const fs = require("fs")
 const logger = require("tracer").colorConsole()
-
 const cproc = require("child_process")
-const { log } = require("console")
 
 const server = http.createServer((req, res) => {
     if (req.method == "GET" && req.url == "/") {
-        mainpage = fs.readFileSync('./index.html')
+        mainpage = fs.readFileSync('./app/index.html')
         res.writeHead(200, { 'Content-Type': 'text/html' })
         res.end(mainpage)
         logger.info("GET /")
     }
 
     else if (req.method == "GET" && req.url == "/script.js"){
-        mainpage = fs.readFileSync('./script.js')
+        mainpage = fs.readFileSync('./app/script.js')
         res.writeHead(200, { 'Content-Type': 'text/javascript' })
         res.end(mainpage)
         logger.info("GET /script.js")
     }
 
     else if (req.method == "GET" && req.url == "/styles.css") {
-        mainpage = fs.readFileSync('./styles.css')
+        mainpage = fs.readFileSync('./app/styles.css')
         res.writeHead(200, { 'Content-Type': 'text/css' })
         res.end(mainpage)
         logger.info("GET /styles.css")
@@ -52,23 +50,14 @@ const server = http.createServer((req, res) => {
                     predictions = output
                 })
                   
-                // digitRecognition.stderr.on('data', (data) => {
-                //     console.error(`Python Error: ${data}`);
-                // })
-                  
                 digitRecognition.on('close', (code, data) => {
                     console.log(`Python process exited with code ${code}`);
-
-                    console.log("FINISH IN A SEC")
 
                     res.writeHead(200, {"Content-Type": "text/plain"});
                     res.end(predictions)
                     return
                 })
 
-                // res.writeHead(200, {"Content-Type": "text/plain"});
-                // res.end(output.toString())
-                // return
             } catch (err){
                 console.log("tu: ", err)
                 res.writeHead(500, {"Content-Type": "text/plain"})
